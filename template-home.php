@@ -85,46 +85,51 @@ get_header();
 <div class="selected-products">
     <div class="row">
         <div class="col-12">
-            <h3 class="heading py-5 px-3">Selected just for you2</h3>
+            <h3 class="heading py-5 px-3">Products in today</h3>
         </div>
         <div class="container">
             <div id="products-carousel" class="owl-carousel owl-theme">
-                <div class="card">
-                    <a href="product.html">
-                        <img src="<?php echo get_theme_file_uri('img/farlov.png') ?>" alt="" class="card-img-top rounded-0">
-                    </a>
-                    <div class="card-body">
-                        <h4>Home office comfy chair</h4>
-                        <h5>$69.99</h5>
-                    </div>
-                </div>
-                <div class="card">
-                    <a href="product.html">
-                        <img src="<?php echo get_theme_file_uri('img/white-sofa.png') ?>" alt="" class="card-img-top rounded-0">
-                    </a>
-                    <div class="card-body">
-                        <h4>White sofa</h4>
-                        <h5>$119.99</h5>
-                    </div>
-                </div>
-                <div class="card">
-                    <a href="product.html">
-                        <img src="<?php echo get_theme_file_uri('img/green-sofa.png') ?>" alt="" class="card-img-top rounded-0">
-                    </a>
-                    <div class="card-body">
-                        <h4>Green couch sofa</h4>
-                        <h5>$149.99</h5>
-                    </div>
-                </div>
-                <div class="card">
-                    <a href="product.html">
-                        <img src="<?php echo get_theme_file_uri('/img/white-chair.png') ?>" alt="" class="card-img-top rounded-0">
-                    </a>
-                    <div class="card-body">
-                        <h4>White chair</h4>
-                        <h5>$69.99</h5>
-                    </div>
-                </div>
+
+                <?php
+
+                $args = array(
+                    'post_type' => 'product',
+                    'posts_per_page' => 5,
+                    'stock' => 1,
+                    'orderby' => 'date',
+                    'order' => 'DESC'
+                );
+                $loop = new WP_Query($args);
+                if ($loop->have_posts()) {
+                    while ($loop->have_posts()) : $loop->the_post();
+                        ?>
+
+                        <div class="card">
+                            <a href="<?php the_permalink(); ?>">
+                                <?php if (has_post_thumbnail()): ?>
+                                    <?php the_post_thumbnail('post-thumbnail', array('class' => 'card-img-top rounded-0')) ?>
+                                <?php endif; ?>
+                            </a>
+                            <div class="card-body">
+                                <h4><?php the_title(); ?></h4>
+                                <?php
+                                global $woocommerce;
+                                $currency = get_woocommerce_currency_symbol();
+                                $_product = wc_get_product(get_the_ID());
+                                ?>
+                                <h5><?php echo esc_html($currency);
+                                    echo esc_html($_product->get_price()); ?></h5>
+                            </div>
+                        </div>
+
+                    <?php
+                    endwhile;
+                } else {
+                    echo __('No products found');
+                }
+                wp_reset_postdata();
+
+                ?>
             </div>
         </div>
     </div>
@@ -175,46 +180,55 @@ get_header();
 <div class="selected-products">
     <div class="row">
         <div class="col-12">
-            <h3 class="heading py-5 px-3">Products in today</h3>
+            <h3 class="heading py-5 px-3">Selected just for you</h3>
         </div>
         <div class="container">
-            <div id="products-carousel2" class="owl-carousel owl-theme">
-                <div class="card">
-                    <a href="product.html">
-                        <img src="<?php echo get_theme_file_uri('img/gray-chair.png') ?>" alt="" class="card-img-top rounded-0">
-                    </a>
-                    <div class="card-body">
-                        <h4>Home office comfy chair</h4>
-                        <h5>$69.99</h5>
-                    </div>
-                </div>
-                <div class="card">
-                    <a href="product.html">
-                        <img src="<?php echo get_theme_file_uri('img/wood-chair.png') ?>" alt="" class="card-img-top rounded-0">
-                    </a>
-                    <div class="card-body">
-                        <h4>White sofa</h4>
-                        <h5>$119.99</h5>
-                    </div>
-                </div>
-                <div class="card">
-                    <a href="product.html">
-                        <img src="<?php echo get_theme_file_uri('img/table.png') ?>" alt="" class="card-img-top rounded-0">
-                    </a>
-                    <div class="card-body">
-                        <h4>Green couch sofa</h4>
-                        <h5>$149.99</h5>
-                    </div>
-                </div>
-                <div class="card">
-                    <a href="product.html">
-                        <img src="<?php echo get_theme_file_uri('img/wardrobe.png') ?>" alt="" class="card-img-top rounded-0">
-                    </a>
-                    <div class="card-body">
-                        <h4>White chair</h4>
-                        <h5>$69.99</h5>
-                    </div>
-                </div>
+            <div id="products-carousel3" class="owl-carousel owl-theme">
+
+                <?php
+
+                $args = array(
+                    'post_type' => 'product',
+                    'posts_per_page' => 100,
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => 'product_visibility',
+                            'field' => 'name',
+                            'terms' => 'featured',
+                        ),
+                    ),
+                );
+                $loop = new WP_Query($args);
+                if ($loop->have_posts()) {
+                    while ($loop->have_posts()) : $loop->the_post();
+                        ?>
+
+                        <div class="card">
+                            <a href="<?php the_permalink(); ?>">
+                                <?php if (has_post_thumbnail()): ?>
+                                    <?php the_post_thumbnail('post-thumbnail', array('class' => 'card-img-top rounded-0')) ?>
+                                <?php endif; ?>
+                            </a>
+                            <div class="card-body">
+                                <h4><?php the_title(); ?></h4>
+                                <?php
+                                global $woocommerce;
+                                $currency = get_woocommerce_currency_symbol();
+                                $_product = wc_get_product(get_the_ID());
+                                ?>
+                                <h5><?php echo esc_html($currency);
+                                    echo esc_html($_product->get_price()); ?></h5>
+                            </div>
+                        </div>
+
+                    <?php
+                    endwhile;
+                } else {
+                    echo __('No products found');
+                }
+                wp_reset_postdata();
+
+                ?>
             </div>
         </div>
     </div>

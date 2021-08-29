@@ -10,6 +10,14 @@
 
 //add_filter('show_admin_bar', '__return_false');
 
+/**
+ * Register Custom Navigation Walker
+ */
+function register_navwalker(){
+    require_once get_template_directory() . '/inc/class-wp-bootstrap-navwalker.php';
+}
+add_action( 'after_setup_theme', 'register_navwalker' );
+
 function the_store_files(){
 
     wp_enqueue_style('bootstrap', get_template_directory_uri().'/css/bootstrap.min.css', array(), '5.1.0', 'all');
@@ -59,3 +67,5 @@ function the_store_config(){
 }
 
 add_action('after_setup_theme', 'the_store_config', 0);
+
+require get_template_directory() . '/inc/wc_modifications.php';

@@ -22,28 +22,27 @@
         <!-- Navigation -->
         <div id="home" data-target="#navbarResponse">
             <nav class="navbar navbar-expand-lg fixed-top solid">
-                <div class="container-fluid">
+                <div class="container-fluid nav_sub_container">
                     <a href="#home" class="navbar-brand">
-                        <img src="img/logo-no-txt.png" alt="">
+                        <img src="<?php echo get_theme_file_uri('img/logo-no-txt.png') ?>" alt="">
                         <span>The Store</span>
                     </a>
                     <button class="navbar-toggler custom-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarResponsive">
                         <span class="custom-toggler-icon icon-bars"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarResponsive">
-                        <ul class="navbar-nav mx-auto">
-                            <li class="nav-item">
-                                <a href="index.html" class="nav-link active">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="products.html" class="nav-link">Products</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="contact.html" class="nav-link">Contact</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <?php
+                    wp_nav_menu( array(
+                        'theme_location'    => 'the_store_main_menu',
+                        'depth'             => 2,
+                        'container'         => 'div',
+                        'container_class'   => 'collapse navbar-collapse',
+                        'container_id'      => 'navbarResponsive',
+                        'menu_class'        => 'nav navbar-nav mx-auto',
+                        'fallback_cb'       => 'WP_Bootstrap_Navwalker::fallback',
+                        'walker'            => new WP_Bootstrap_Navwalker(),
+                    ) );
+                    ?>
                 </div>
             </nav>
             <!-- End Navigation -->
