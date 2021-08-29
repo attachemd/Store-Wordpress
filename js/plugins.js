@@ -81,6 +81,7 @@ $(document).ready(function () { //when document(DOM) loads completely
     }
     $('#products-carousel').owlCarousel(obj);
     $('#products-carousel2').owlCarousel(obj);
+    $('#products-carousel3').owlCarousel(obj);
 });
 
 
@@ -108,5 +109,26 @@ $('.number-spinner>input').keypress(function (evt) {
     }
     return true;
 });
+
+let dropdownToggle = $('.nav_sub_container .dropdown-toggle');
+dropdownToggle.click(toggleDisplaySubMenu);
+$(document).click(hideSubMenu);
+
+// $(document).click (function (e) {
+//
+//     if (e.target != $('.nav_sub_container .dropdown-toggle span')[0] && e.target != $('.nav_sub_container .dropdown-toggle')[0]) {
+//         $('.nav_sub_container .dropdown-toggle + .dropdown-menu').removeClass('toggle-dropdown-menu');
+//     }
+// });
+
+function toggleDisplaySubMenu() {
+    $('.nav_sub_container .dropdown-toggle + .dropdown-menu').toggleClass('toggle-dropdown-menu');
+}
+function hideSubMenu(e) {
+
+    if (e.target !== $('.nav_sub_container .dropdown-toggle span')[0] && e.target !== dropdownToggle[0]) {
+        $('.nav_sub_container .dropdown-toggle + .dropdown-menu').removeClass('toggle-dropdown-menu');
+    }
+}
 
 
